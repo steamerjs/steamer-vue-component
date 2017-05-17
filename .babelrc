@@ -1,0 +1,22 @@
+{
+	"plugins": [
+		"transform-decorators-legacy"
+	],
+  	"presets": [
+        ["es2015", {"loose": true}],
+        "stage-0"
+    ],
+	"env": {
+		"test": {
+			"plugins": [ 
+				"transform-decorators-legacy",
+				"istanbul" 
+			],
+			"presets": [
+				["es2015", {"loose": true, "modules": false}], 
+				"react",
+				"stage-0"
+			]
+		}
+	}
+}
