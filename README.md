@@ -59,7 +59,7 @@ npm run webpack
 
 ## 编写demo
 
-直接在`/example/src/`目录下调整关于组件的使用逻辑和范例样式即可，如范例中该目录下的index.js和index.less文件。
+直接在`/example/src/container/`目录下调整关于组件的使用逻辑和范例样式即可，如范例中该目录下的index.js和index.less文件。
 
 
 ## 详细文档
