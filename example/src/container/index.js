@@ -4,6 +4,6 @@ import Hello from 'index';
 import './index.less';
 
 new Vue({
-    el: '#root',
+    el: '#container',
     render: h => h(Hello),
 })
