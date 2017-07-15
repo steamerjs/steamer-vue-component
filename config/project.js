@@ -23,6 +23,9 @@ var config = {
     // ========================= webpack环境配置 =========================
     env: __env,
 
+    // 默认使用的npm命令行
+    npm: 'npm',
+
     webpack: {
 
         // ========================= webpack路径与url =========================
@@ -45,6 +48,9 @@ var config = {
         // ========================= webpack自定义配置 =========================
         // 是否清理生成文件夹
         clean: true,
+
+        // javascript 方言，目前仅支持 ts(typescript)
+        js: [],
 
         // 预编译器，默认支持css 和 less. sass, scss 和 stylus 由npm-install-webpack-plugin自动安装
         style: [
@@ -70,6 +76,47 @@ var config = {
         alias: {
             
         },
+
+        // ========================= webpack entry配置 =========================
+        // 根据约定，自动扫描js entry，约定是src/page/xxx/main.js 或 src/page/xxx/main.jsx
+        /** 
+            获取结果示例
+            {
+                'js/index': [path.join(configWebpack.path.src, "/page/index/main.js")],
+                'js/spa': [path.join(configWebpack.path.src, "/page/spa/main.js")],
+                'js/pindex': [path.join(configWebpack.path.src, "/page/pindex/main.jsx")],
+            }
+         */
+        entry: utils.filterJsFileByCmd(utils.getJsEntry({
+            srcPath: path.join(examplePath, "src/page"), 
+            fileName: "main",
+            extensions: ["js", "jsx"],
+            keyPrefix: "",
+            level: 1
+        })),
+
+        // 自动扫描html，配合html-res-webpack-plugin
+        /**
+            获取结果示例
+            [ 
+                { 
+                    key: 'index',
+                    path: 'path/src/page/index/index.html'
+                },
+                { 
+                    key: 'spa',
+                    path: 'path/src/page/spa/index.html'
+                },
+                { 
+                    key: 'pindex',
+                    path: 'path/src/page/pindex/index.html'
+                } 
+            ]
+         */
+        html: utils.filterHtmlFileByCmd(utils.getHtmlEntry({
+            srcPath: path.join(examplePath, "src/page"),
+            level: 1
+        })),
 
     },
 };
@@ -116,16 +163,18 @@ config.custom = {
         var plugins = [];
 
         if (!isProduction) {
-            plugins.push(new HtmlResWebpackPlugin({
-                mode: "html",
-                filename: "index.html",
-                template: path.join(config.webpack.path.example, "src/index.html"),
-                htmlMinify: null,
-                entryLog: true,
-                templateContent: function(tpl) {
-                    return tpl;
-                }
-            }));
+            config.webpack.html.forEach(function(page, key) {
+                plugins.push(new HtmlResWebpackPlugin({
+                    mode: "html",
+                    filename: page.key + ".html",
+                    template: page.path,
+                    htmlMinify: null,
+                    entryLog: true,
+                    templateContent: function(tpl) {
+                        return tpl;
+                    }
+                }));
+            }); 
         }
         
         return plugins;

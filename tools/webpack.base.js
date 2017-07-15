@@ -15,16 +15,10 @@ var config = require('../config/project'),
 var Clean = require('clean-webpack-plugin')
 
 var baseConfig = {
-    entry: {
-        "index": [
-            isProduction ? 
-            path.join(configWebpack.path.src, "index.js")
-            : path.join(configWebpack.path.example, "src/index.js")
-        ],
-    },
+    entry: configWebpack.entry,
     output: {
-        path: isProduction ? configWebpack.path.dist : path.join(configWebpack.path.example, "dev"),
-        filename: "[name].js",
+        path: isProduction ? configWebpack.path.dist : path.join(configWebpack.path.example, 'dev'),
+        filename: '[name].js',
         publicPath: configWebpack.webserver,
     },
     module: {
@@ -37,19 +31,19 @@ var baseConfig = {
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
                 loaders: [
-                    "url-loader?limit=1000&name=img/[path]/[name].[ext]",
+                    'url-loader?limit=1000&name=img/[path]/[name].[ext]',
                 ],
             },
         ]
     },
     resolve: {
         modules:['node_modules', configWebpack.path.src],
-        extensions: [".js", ".jsx", ".es6", ".css", ".scss", ".less", ".png", ".jpg", ".jpeg", ".ico"],
+        extensions: ['.js', '.jsx', '.es6', '.css', '.scss', '.less', '.png', '.jpg', '.jpeg', '.ico'],
         alias: {}
     },
     plugins: [
         // remove previous build folder
-        new Clean([isProduction ? configWebpack.path.dist : path.join(configWebpack.path.example, "dev")], {root: path.resolve()}),
+        new Clean([isProduction ? configWebpack.path.dist : path.join(configWebpack.path.example, 'dev')], {root: path.resolve()}),
         new webpack.NoEmitOnErrorsPlugin()
     ],
     watch: !isProduction,
@@ -102,7 +96,7 @@ var styleRules = {
                 options: {
                     paths: [
                         config.webpack.path.src,
-                        "node_modules"
+                        'node_modules'
                     ]
                 }
             }
@@ -131,7 +125,7 @@ var styleRules = {
                 options: {
                     paths: [
                         config.webpack.path.src,
-                        "node_modules"
+                        'node_modules'
                     ]
                 }
             },
@@ -160,7 +154,7 @@ var styleRules = {
                 options: {
                     includePaths: [
                         config.webpack.path.src,
-                        "node_modules"
+                        'node_modules'
                     ]
                 }
             },
@@ -180,11 +174,11 @@ var templateRules = {
     },
     handlebars: { 
         test: /\.handlebars$/, 
-        loader: "handlebars-loader" 
+        loader: 'handlebars-loader' 
     },  
     ejs: {
         test: /\.ejs$/,
-        loader: "ejs-compiled-loader",
+        loader: 'ejs-compiled-loader',
         query: {
             'htmlmin': true, // or enable here  
             'htmlminOptions': {

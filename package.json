@@ -13,7 +13,8 @@
     "webpack": "node ./tools/script.js --mode=production",
     "karma": "cross-env BABEL_ENV=test node ./tools/script.js --mode=karma",
     "lint": "eslint src/**/*.js && stylelint src/**/*.less",
-    "prepublish": "npm run dist"
+    "lint:js": "eslint src/**/*.js",
+    "lint:style": "stylelint src/**/*.less"
   },
   "repository": {
     "type": "git",
@@ -66,6 +67,7 @@
     "karma-webpack": "^2.0.4",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
+    "lodash.merge": "^4.6.0",
     "mocha": "^3.4.2",
     "mochawesome": "^2.3.0",
     "opn": "^5.1.0",

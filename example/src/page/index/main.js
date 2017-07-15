@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Hello from 'index';
 
-import './index.less';
+import './container/index.less';
 
 new Vue({
     el: '#container',
