@@ -188,6 +188,14 @@ var templateRules = {
     }
 };
 
+// js方言
+var jsRules = {
+    ts: {
+        test: /\.(tsx|ts)$/,
+        loader: 'awesome-typescript-loader'
+    }
+};
+
 // vue-loader的样式loader配置
 var vueLoader = {
     test: /\.vue$/,
@@ -220,6 +228,12 @@ baseConfig.module.rules.push(vueLoader);
 
 configWebpack.template.forEach((tpl) => {
     let rule = templateRules[tpl] || '';
+    rule && baseConfig.module.rules.push(rule);
+});
+
+configWebpack.js.forEach((tpl) => {
+    let rule = jsRules[tpl] || '';
+
     rule && baseConfig.module.rules.push(rule);
 });
 
