@@ -233,7 +233,6 @@ configWebpack.template.forEach((tpl) => {
 
 configWebpack.js.forEach((tpl) => {
     let rule = jsRules[tpl] || '';
-
     rule && baseConfig.module.rules.push(rule);
 });
 
