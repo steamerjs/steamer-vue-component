@@ -12,9 +12,7 @@ var config = require('../config/project'),
     env = process.env.NODE_ENV,
     isProduction = env === 'production';
 
-var Clean = require('clean-webpack-plugin'),
-    NpmInstallPlugin  = require('npm-install-webpack-plugin-steamer'),
-    StylelintWebpackPlugin = require('stylelint-webpack-plugin');
+var Clean = require('clean-webpack-plugin')
 
 var baseConfig = {
     entry: {
@@ -31,12 +29,6 @@ var baseConfig = {
     },
     module: {
         rules: [
-            {
-                test: /\.(js|vue)$/,
-                loader: 'eslint-loader',
-                enforce: "pre",
-                include: configWebpack.path.src
-            },
             { 
                 test: /\.js$/,
                 loader: 'babel-loader',
@@ -58,23 +50,7 @@ var baseConfig = {
     plugins: [
         // remove previous build folder
         new Clean([isProduction ? configWebpack.path.dist : path.join(configWebpack.path.example, "dev")], {root: path.resolve()}),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new StylelintWebpackPlugin({
-            configFile: path.resolve(__dirname, '../.stylelintrc.js'),
-            context: 'inherits from webpack',
-            files: '../src/**/*.@(?(s)?(a|c)ss|less|html|vue)',
-            failOnError: false,
-            lintDirtyModulesOnly: true,                 // 只在改变的时候lint，其他时候跳过
-            extractStyleTagsFromHtml: true,
-        }),
-        new NpmInstallPlugin({
-            // Use --save or --save-dev
-            dev: true,
-            // Install missing peerDependencies
-            peerDependencies: true,
-            // Reduce amount of console logging
-            quiet: false,
-        })
+        new webpack.NoEmitOnErrorsPlugin()
     ],
     watch: !isProduction,
 };
