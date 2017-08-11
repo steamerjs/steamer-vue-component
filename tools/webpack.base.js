@@ -12,7 +12,8 @@ var config = require('../config/project'),
     env = process.env.NODE_ENV,
     isProduction = env === 'production';
 
-var Clean = require('clean-webpack-plugin')
+var Clean = require('clean-webpack-plugin'),
+    WriteFilePlugin = require('write-file-webpack-plugin');
 
 var baseConfig = {
     entry: configWebpack.entry,
@@ -242,6 +243,10 @@ if (isProduction) {
 }
 else {
     baseConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
+
+    if (configWebpack.showSource) {
+        baseConfig.plugins.push(new WriteFilePlugin());
+    }
 }
 
 /************* base 与 user config 合并 *************/

@@ -5,35 +5,42 @@ const utils = require('steamer-webpack-utils'),
 	  fs = require('fs'),
 	  opn = require('opn'),
 	  path = require('path');
+
 var karma = require('karma').server;
 
-var argv = utils.getArgvs(),
-	npmArgv = utils.getArgvs(JSON.parse(process.env.npm_config_argv || "[]").original),
-	mode = argv.mode;
+const isProduction = process.env.NODE_ENV === 'production',
+	  isKarma = process.env.KARMA_ENV === 'karma',
+	  feature = require('./feature/feature');
 
-var isProduction = mode === "production";
+if (feature.installDependency()) {
+	return;
+}
 
-if (mode === 'development') {
-	process.env.NODE_ENV = "development";
 
-	const feature = require('./feature/feature');
-
-	if (feature.installDependency()) {
-		return;
-	}
-
+if (isKarma) {	
+	var config = require('../config/project'),
+    	configWebpack = config.webpack;
+    
+	karma.start({
+		configFile: path.join(configWebpack.path.test, '/unit/karma.conf.js'),
+		singleRun: true
+	}, function(){
+		console.log("karma test done!");
+		opn(path.join(configWebpack.path.test,'unit/coverage/lcov-report/index.html'));
+	});
+}
+else if (!isProduction) {	
 	require('./server');
 }
-else if (mode === 'production' || mode === 'source'){
-	process.env.NODE_ENV = isProduction ? "production" : "development";
+else if (isProduction) {
 
-	const feature = require('./feature/feature');
+	compilerRun(require('./webpack.base'));
+}
 
-	if (feature.installDependency()) {
-		return;
-	}
 
-	var compiler = webpack(require('./webpack.base'));
+function compilerRun(config) {
+	var compiler = webpack(config);
+
 	compiler.run(function(err, stats) {
 	    if (!err) {
 	        const jsonStats = stats.toJson();
@@ -44,13 +51,14 @@ else if (mode === 'production' || mode === 'source'){
 	            cached: true,
 	            chunks: false, // Makes the dist much quieter
 	            colors: true,
-	            children: false, // supress some plugin output
+	            children: false // supress some plugin output
 	        }));
 
 	        if (jsonStats.errors.length > 0) {
 	            console.log('Webpack compiler encountered errors.');
 	            console.log(jsonStats.errors.join('\n'));
-	        } else if (jsonStats.warnings.length > 0) {
+	        }
+            else if (jsonStats.warnings.length > 0) {
 	            console.log('Webpack compiler encountered warnings.');
 	            console.log(jsonStats.warnings.join('\n'));
 	        }
@@ -59,18 +67,4 @@ else if (mode === 'production' || mode === 'source'){
 	        console.log(err);
 	    }
 	});
-}
-else if (mode === 'karma') {
-	process.env.NODE_ENV = "production";
-	
-	var config = require('../config/project'),
-    	configWebpack = config.webpack;
-    
-	karma.start({
-		configFile: path.join(configWebpack.path.test, '/unit/karma.conf.js'),
-		singleRun: true
-	}, function(){
-		console.log("karma test done!");
-		opn(path.join(configWebpack.path.test,'unit/coverage/lcov-report/index.html'));
-	})
 }
