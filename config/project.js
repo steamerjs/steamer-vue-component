@@ -185,7 +185,15 @@ config.custom = {
         
     // webpack externals
     getExternals: function() {
-        return {};
+        if (isProduction) {
+            return {
+                'vue': 'Vue',
+            };
+        } else {
+            return {
+
+            };
+        }
     },
 
     // 其它 webpack 配置
