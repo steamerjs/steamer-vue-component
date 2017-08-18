@@ -145,7 +145,7 @@ config.custom = {
         if (isProduction) {
             return {
                 library: "lib",
-                libraryTarget: "umd",
+                libraryTarget: "commonjs2",
             };
         }
         else {
