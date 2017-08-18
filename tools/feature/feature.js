@@ -58,27 +58,13 @@ var dependency = {
 			'stylus-loader': '^3.0.1'
 		}
 	},
-	js: {
-		ts: {
-			'awesome-typescript-loader': '^3.2.1',
-			'typescript': '^2.4.1',
-			'@types/react': '^15.0.35',
-			'@types/react-dom': '^15.5.1'
-		}
-	}
+	js: {}
 };
 
 var files = {
 	template: {},
 	style: {},
-	js: {
-		ts: [
-			{
-				src: path.join(__dirname, './tsconfig.json'),
-				dist: path.resolve('tsconfig.json')
-			}
-		]
-	}
+	js: {}
 };
 
 module.exports = {

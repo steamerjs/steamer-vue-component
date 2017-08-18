@@ -1,3 +1,3 @@
-import Hello from './hello.vue';
+import Spinner from './spinner.vue';
 
-export default Hello;
+export default Spinner;
