@@ -17,7 +17,7 @@ var baseConfig = {
     context: configWebpack.path.src,
     entry: configWebpack.entry,
     output: {
-        publicPath: configWebpack.webserver,
+        publicPath: isProduction ? `/${path.basename(configWebpack.path.dist)}/` : configWebpack.webserver,
         path: isProduction ? configWebpack.path.dist : path.join(configWebpack.path.example, 'dev'),
         filename: '[name].js',
     },

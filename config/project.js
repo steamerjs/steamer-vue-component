@@ -76,6 +76,9 @@ var config = {
         // 是否清理生成文件夹
         clean: true,
 
+        // 是否压缩
+        compress: false,
+
         // javascript 方言, 即将支持ts(typescript)
         js: [],
 
@@ -181,12 +184,7 @@ config.custom = {
     getExternals: function() {
         if (isProduction) {
             return {
-                vue: {
-                    root: 'Vue',
-                    commonjs: 'vue',
-                    commonjs2: 'vue',
-                    amd: 'vue'
-                }
+                vue: 'Vue'
             };
         } else {
             return {

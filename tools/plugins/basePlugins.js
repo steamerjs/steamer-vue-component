@@ -12,7 +12,8 @@ module.exports = function(config, webpack) {
 
 	var plugins = [
 		new webpack.NoEmitOnErrorsPlugin(),
-		new webpack.DefinePlugin(configWebpack.injectVar)
+		new webpack.DefinePlugin(configWebpack.injectVar),
+		// new webpack.optimize.ModuleConcatenationPlugin()
 	];
 
 	if (isProduction) {
