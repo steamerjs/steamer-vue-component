@@ -5,8 +5,6 @@
 
 ## 快速启动
 
-## 快速启动
-
 * 推荐 >> 使用[steamerjs](https://steamerjs.github.io/docs/projectkits/Bootstrap.html)安装
 
 ```javascript
