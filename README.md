@@ -5,7 +5,19 @@
 
 ## 快速启动
 
-* 推荐 >> 使用[steamerjs](https://steamerjs.github.io/docs/How-To-Start.html)安装
+## 快速启动
+
+* 推荐 >> 使用[steamerjs](https://steamerjs.github.io/docs/projectkits/Bootstrap.html)安装
+
+```javascript
+
+npm i -g steamerjs steamer-plugin-kit
+
+npm i -g steamer-vue-component
+
+steamer kit
+```
+
 * 直接从github clone 下来
 
 ### 安装依赖
@@ -56,8 +68,8 @@ npm run webpack
 直接在`/example/src/container/`目录下调整关于组件的使用逻辑和范例样式即可，如范例中该目录下的index.js和index.less文件。
 
 
-## 详细文档
-[参见文档 - 组件脚手架](https://steamerjs.github.io/docs/Component-Starterkit.html)
+## 脚手架文档
+[参见文档 - 组件脚手架](https://steamerjs.github.io/docs/componentkits/Starterkit.html)
 
 ## 文章参考
 * [聊一聊前端自动化测试](https://github.com/tmallfe/tmallfe.github.io/issues/37)
