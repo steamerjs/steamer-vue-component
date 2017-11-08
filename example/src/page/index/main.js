@@ -6,4 +6,4 @@ import './container/index.less';
 new Vue({
     el: '#container',
     render: h => h(Spinner),
-})
+});

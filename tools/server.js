@@ -1,37 +1,39 @@
-const url = require('url');
-	  express = require('express'),
-	  app = express(),
-	  webpack = require('webpack'),
-	  webpackDevMiddleware = require("webpack-dev-middleware"),
-	  webpackHotMiddleware = require("webpack-hot-middleware"),
-	  proxy = require('http-proxy-middleware');
+const url = require('url'),
+    express = require('express'),
+    app = express(),
+    webpack = require('webpack'),
+    webpackDevMiddleware = require('webpack-dev-middleware'),
+    webpackHotMiddleware = require('webpack-hot-middleware'),
+    proxy = require('http-proxy-middleware');
 
-var webpackConfig = require("./webpack.base.js"),
-	config = require("../config/project"),
-	configWebpack = config.webpack,
-	port = configWebpack.port,
-	route = Array.isArray(configWebpack.route) ? configWebpack.route : [configWebpack.route];
+let webpackConfig = require('./webpack.base.js'),
+    config = require('../config/project'),
+    configWebpack = config.webpack,
+    port = configWebpack.port,
+    route = Array.isArray(configWebpack.route) ? configWebpack.route : [configWebpack.route];
 
 function addProtocal(urlString) {
-	if (!!~urlString.indexOf('http:') || !!~urlString.indexOf('https:')) {
-		return urlString;
-	}
-	return 'http:' + urlString;
+    if (!!~urlString.indexOf('http:') || !!~urlString.indexOf('https:')) {
+        return urlString;
+    }
+    return 'http:' + urlString;
 }
 
-var urlObject = url.parse(addProtocal(configWebpack.webserver));
+let urlObject = url.parse(addProtocal(configWebpack.webserver));
 
-for (var key in webpackConfig.entry) {
-    webpackConfig.entry[key].unshift(`webpack-hot-middleware/client?reload=true&dynamicPublicPath=true&path=__webpack_hmr`);
+for (let key in webpackConfig.entry) {
+    if (webpackConfig.entry.hasOwnProperty(key)) {
+        webpackConfig.entry[key].unshift(`webpack-hot-middleware/client?reload=true&dynamicPublicPath=true&path=__webpack_hmr`);
+    }
 }
 
-var compiler = webpack(webpackConfig);
+let compiler = webpack(webpackConfig);
 app.use(webpackDevMiddleware(compiler, {
-	noInfo: true,
-	stats: { 
-		colors: true 
-	},
-	publicPath: configWebpack.webserver
+    noInfo: true,
+    stats: {
+        colors: true
+    },
+    publicPath: configWebpack.webserver
 }));
 
 app.use(webpackHotMiddleware(compiler, {
@@ -42,14 +44,14 @@ app.use(webpackHotMiddleware(compiler, {
 
 // 静态资源转发
 route.forEach((rt) => {
-	app.use(rt, proxy({target: `http://127.0.0.1:${port}`, pathRewrite: {[`^${rt}`] : '/'}}));
+    app.use(rt, proxy({ target: `http://127.0.0.1:${port}`, pathRewrite: { [`^${rt}`]: '/' }}));
 });
 
 app.listen(port, function(err) {
-	if (err) {
-		console.error(err);
-	}
-	else {
-		console.info("Listening on port %s. Open up http://localhost:%s/ in your browser.", port, port);
-	}
+    if (err) {
+        console.error(err);
+    }
+    else {
+        console.info('Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);
+    }
 });

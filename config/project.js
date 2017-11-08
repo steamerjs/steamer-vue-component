@@ -1,21 +1,17 @@
-'use strict';
-
 const path = require('path'),
-      os = require('os'),
-      webpack = require('webpack'),
-      utils = require('steamer-webpack-utils'),
-      steamerConfig = require('./steamer.config'),
-      __basename = path.dirname(__dirname),
-      __env = process.env.NODE_ENV,
-      isProduction = __env === 'production';
+    utils = require('steamer-webpack-utils'),
+    steamerConfig = require('./steamer.config'),
+    __basename = path.dirname(__dirname),
+    __env = process.env.NODE_ENV,
+    isProduction = __env === 'production';
 
-var srcPath = path.resolve(__basename, "src"),
-    devPath = path.resolve(__basename, "dev"),
-    distPath = path.resolve(__basename, "dist"),
-    examplePath = path.resolve(__basename, "example"),
-    testPath = path.resolve(__basename, "test");
+let srcPath = path.resolve(__basename, 'src'),
+    devPath = path.resolve(__basename, 'dev'),
+    distPath = path.resolve(__basename, 'dist'),
+    examplePath = path.resolve(__basename, 'example'),
+    testPath = path.resolve(__basename, 'test');
 
-var entry = {};
+let entry = {};
 
 
 if (isProduction) {
@@ -25,7 +21,7 @@ if (isProduction) {
 }
 else {
     // 根据约定，自动扫描js entry，约定是example/src/page/xxx/main.js 或 example/src/page/xxx/main.jsx
-    /** 
+    /**
         获取结果示例
         {
             'js/index': [path.join(configWebpack.path.src, "/page/index/main.js")],
@@ -34,17 +30,17 @@ else {
         }
      */
     entry = utils.filterJsFileByCmd(utils.getJsEntry({
-        srcPath: path.join(examplePath, "src/page"), 
-        fileName: "main",
-        extensions: ["js", "jsx"],
-        keyPrefix: "",
+        srcPath: path.join(examplePath, 'src/page'),
+        fileName: 'main',
+        extensions: ['js', 'jsx'],
+        keyPrefix: '',
         level: 1
     }));
 }
 
 // ========================= webpack快捷配置 =========================
 // 基本情况下，你只需要关注这里的配置
-var config = {
+let config = {
     // ========================= webpack环境配置 =========================
     env: __env,
 
@@ -72,7 +68,7 @@ var config = {
         // ========================= webpack自定义配置 =========================
         // 是否显示开发环境下的生成文件
         showSource: true,
-        
+
         // 是否清理生成文件夹
         clean: true,
 
@@ -84,7 +80,7 @@ var config = {
 
         // 预编译器，默认支持css 和 less. sass, scss 和 stylus 由npm-install-webpack-plugin自动安装
         style: [
-            "css", "less"
+            'css', 'less'
         ],
         // 生产环境是否提取css
         extractCss: true,
@@ -93,18 +89,18 @@ var config = {
 
         // html 模板. 默认支持html 和 ejs, handlebars 和 pug 由npm-install-webpack-plugin自动安装
         template: [
-            "html",
+            'html',
         ],
 
         // 利用DefinePlugin给应用注入变量
         injectVar: {
-            "process.env": {
+            'process.env': {
                 NODE_ENV: JSON.stringify(__env)
             }
         },
 
         alias: {
-            
+
         },
 
         // ========================= webpack entry配置 =========================
@@ -113,23 +109,23 @@ var config = {
         // 自动扫描html，配合html-res-webpack-plugin
         /**
             获取结果示例
-            [ 
-                { 
+            [
+                {
                     key: 'index',
                     path: 'path/src/page/index/index.html'
                 },
-                { 
+                {
                     key: 'spa',
                     path: 'path/src/page/spa/index.html'
                 },
-                { 
+                {
                     key: 'pindex',
                     path: 'path/src/page/pindex/index.html'
-                } 
+                }
             ]
          */
         html: utils.filterHtmlFileByCmd(utils.getHtmlEntry({
-            srcPath: path.join(examplePath, "src/page"),
+            srcPath: path.join(examplePath, 'src/page'),
             level: 1
         })),
 
@@ -144,11 +140,11 @@ var config = {
 config.custom = {
     // webpack output
     getOutput: function() {
-        
+
         if (isProduction) {
             return {
-                library: "lib",
-                libraryTarget: "commonjs2",
+                library: 'lib',
+                libraryTarget: 'commonjs2',
             };
         }
         else {
@@ -159,10 +155,10 @@ config.custom = {
     // webpack module
     getModule: function() {
 
-        var module = {
+        let module = {
             rules: []
         };
-        
+
         return module;
     },
 
@@ -175,11 +171,11 @@ config.custom = {
 
     // webpack plugins
     getPlugins: function() {
-        var plugins = [];
-        
+        let plugins = [];
+
         return plugins;
     },
-        
+
     // webpack externals
     getExternals: function() {
         if (isProduction) {
@@ -203,8 +199,8 @@ config.custom = {
 config.webpackMerge = {
     // webpack-merge smartStrategy 配置
     smartStrategyOption: {
-        "module.rules": "append",
-        "plugins": "append"
+        'module.rules': 'append',
+        'plugins': 'append'
     },
 
     // 在smartStrategy merge 之前，用户可以先行对 webpack.base.js 的配置进行处理
